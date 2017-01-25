@@ -104,6 +104,7 @@ module Faraday
 
       @logger = logger
       @shared_cache = shared_cache
+      @ignore_ttl = ignore_ttl || false
       @instrumenter = instrumenter
       @instrument_name = instrument_name
       @storage = Storage.new(store: store, serializer: serializer, logger: logger)
@@ -194,7 +195,7 @@ module Faraday
 
       return fetch(env) if entry.nil?
 
-      if entry.fresh?
+      if !@ignore_ttl && entry.fresh?
         response = entry.to_response(env)
         trace :fresh
       else
