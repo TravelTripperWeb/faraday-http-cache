@@ -99,12 +99,12 @@ module Faraday
     #   # Initialize the middleware with a MemoryStore and logger
     #   store = ActiveSupport::Cache.lookup_store
     #   Faraday::HttpCache.new(app, store: store, logger: my_logger)
-    def initialize(app, store: nil, serializer: nil, shared_cache: true, instrumenter: nil, instrument_name: EVENT_NAME, logger: nil) # rubocop:disable Metrics/ParameterLists
+    def initialize(app, store: nil, serializer: nil, shared_cache: true, ignore_ttl: false, instrumenter: nil, instrument_name: EVENT_NAME, logger: nil) # rubocop:disable Metrics/ParameterLists
       super(app)
 
       @logger = logger
       @shared_cache = shared_cache
-      @ignore_ttl = ignore_ttl || false
+      @ignore_ttl = ignore_ttl
       @instrumenter = instrumenter
       @instrument_name = instrument_name
       @storage = Storage.new(store: store, serializer: serializer, logger: logger)
